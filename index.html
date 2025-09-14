@@ -1,0 +1,546 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM Internship Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-section {
+            padding: 25px;
+        }
+
+        .step {
+            margin-bottom: 25px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            background: #FF6B35;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .skill-tag {
+            background: #f0f0f0;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .skill-tag.selected {
+            background: #FF6B35;
+            color: white;
+            border-color: #FF6B35;
+        }
+
+        .find-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .find-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .recommendations {
+            display: none;
+            padding: 25px;
+            background: #f8f9fa;
+        }
+
+        .rec-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .internship-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #FF6B35;
+        }
+
+        .internship-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .internship-company {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .internship-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .apply-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .method-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .method-btn.active {
+            background: #FF6B35;
+            color: white;
+            border-color: #FF6B35;
+        }
+
+        .application-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .linkedin-connect-btn {
+            background: #0077B5;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Find Your Perfect Internship</h1>
+            <p>Get personalized recommendations in 2 minutes</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="form-section" id="formSection">
+            <div class="step">
+                <div class="step-title">
+                    <div class="icon">1</div>
+                    Your Education
+                </div>
+                <select id="education">
+                    <option value="">Select your education level</option>
+                    <option value="12th">12th Grade Completed</option>
+                    <option value="diploma">Diploma</option>
+                    <option value="graduation">Bachelor's Degree</option>
+                    <option value="postgrad">Master's Degree</option>
+                </select>
+                <select id="field">
+                    <option value="">Field of Study</option>
+                    <option value="engineering">Engineering</option>
+                    <option value="commerce">Commerce/Business</option>
+                    <option value="arts">Arts/Humanities</option>
+                    <option value="science">Science</option>
+                    <option value="agriculture">Agriculture</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="step">
+                <div class="step-title">
+                    <div class="icon">2</div>
+                    Your Skills & Interests
+                </div>
+                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Tap to select your skills:</p>
+                <div class="skill-tags">
+                    <div class="skill-tag" data-skill="communication">Communication</div>
+                    <div class="skill-tag" data-skill="computer">Computer Skills</div>
+                    <div class="skill-tag" data-skill="sales">Sales & Marketing</div>
+                    <div class="skill-tag" data-skill="teaching">Teaching</div>
+                    <div class="skill-tag" data-skill="design">Design</div>
+                    <div class="skill-tag" data-skill="writing">Writing</div>
+                    <div class="skill-tag" data-skill="finance">Finance</div>
+                    <div class="skill-tag" data-skill="research">Research</div>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-title">
+                    <div class="icon">3</div>
+                    Location Preference
+                </div>
+                <select id="location">
+                    <option value="">Preferred work location</option>
+                    <option value="remote">Work from Home</option>
+                    <option value="local">In my city/district</option>
+                    <option value="state">Anywhere in my state</option>
+                    <option value="national">Anywhere in India</option>
+                </select>
+                <input type="text" id="city" placeholder="Enter your city/district">
+            </div>
+
+            <button class="find-btn" onclick="findInternships()">
+                🔍 Find My Internships
+            </button>
+        </div>
+
+        <div class="recommendations" id="recommendations">
+            <button class="back-btn" onclick="goBack()">← Search Again</button>
+            <div class="rec-title">Perfect Matches for You! 🎉</div>
+            <div id="internshipList"></div>
+        </div>
+    </div>
+
+    <script>
+        let selectedSkills = [];
+        let currentStep = 1;
+
+        // Sample internship data
+        const internships = [
+            {
+                title: "Digital Marketing Assistant",
+                company: "Tech Solutions Pvt Ltd",
+                location: "Remote",
+                duration: "3 months",
+                stipend: "₹8,000/month",
+                skills: ["communication", "computer", "sales"],
+                education: ["12th", "graduation"]
+            },
+            {
+                title: "Content Writing Intern",
+                company: "Media House",
+                location: "Mumbai",
+                duration: "6 months", 
+                stipend: "₹10,000/month",
+                skills: ["writing", "research", "communication"],
+                education: ["graduation", "postgrad"]
+            },
+            {
+                title: "Teaching Assistant",
+                company: "EduTech Foundation",
+                location: "Local Schools",
+                duration: "4 months",
+                stipend: "₹6,000/month",
+                skills: ["teaching", "communication"],
+                education: ["graduation", "diploma"]
+            },
+            {
+                title: "Financial Analysis Trainee",
+                company: "Bank of Progress",
+                location: "Delhi",
+                duration: "6 months",
+                stipend: "₹15,000/month",
+                skills: ["finance", "computer", "research"],
+                education: ["graduation", "postgrad"]
+            },
+            {
+                title: "Graphic Design Intern",
+                company: "Creative Agency",
+                location: "Remote",
+                duration: "3 months",
+                stipend: "₹7,000/month",
+                skills: ["design", "computer"],
+                education: ["12th", "diploma", "graduation"]
+            }
+        ];
+
+        // Skill selection
+        document.querySelectorAll('.skill-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const skill = this.dataset.skill;
+                if (selectedSkills.includes(skill)) {
+                    selectedSkills = selectedSkills.filter(s => s !== skill);
+                    this.classList.remove('selected');
+                } else {
+                    selectedSkills.push(skill);
+                    this.classList.add('selected');
+                }
+                updateProgress();
+            });
+        });
+
+        // Update progress bar
+        function updateProgress() {
+            const education = document.getElementById('education').value;
+            const field = document.getElementById('field').value;
+            const location = document.getElementById('location').value;
+            const city = document.getElementById('city').value;
+            
+            let progress = 0;
+            if (education) progress += 25;
+            if (field) progress += 25;
+            if (selectedSkills.length > 0) progress += 25;
+            if (location) progress += 25;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Add event listeners for form updates
+        ['education', 'field', 'location', 'city'].forEach(id => {
+            document.getElementById(id).addEventListener('change', updateProgress);
+        });
+
+        function findInternships() {
+            const education = document.getElementById('education').value;
+            const field = document.getElementById('field').value;
+            const location = document.getElementById('location').value;
+            const city = document.getElementById('city').value;
+
+            if (!education || selectedSkills.length === 0) {
+                alert('Please complete your education details and select at least one skill');
+                return;
+            }
+
+            // Simple recommendation algorithm
+            const recommendations = internships
+                .map(internship => {
+                    let score = 0;
+                    
+                    // Education match
+                    if (internship.education.includes(education)) score += 3;
+                    
+                    // Skills match
+                    const skillMatches = internship.skills.filter(skill => selectedSkills.includes(skill));
+                    score += skillMatches.length * 2;
+                    
+                    // Location preference
+                    if (location === 'remote' && internship.location === 'Remote') score += 2;
+                    if (location === 'local' && internship.location.includes('Local')) score += 2;
+                    
+                    return { ...internship, score, skillMatches };
+                })
+                .filter(internship => internship.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 4);
+
+            displayRecommendations(recommendations);
+        }
+
+        function displayRecommendations(recommendations) {
+            const listContainer = document.getElementById('internshipList');
+            
+            if (recommendations.length === 0) {
+                listContainer.innerHTML = '<p style="text-align: center; color: #666;">No perfect matches found. Try adjusting your preferences.</p>';
+            } else {
+                listContainer.innerHTML = recommendations.map(internship => `
+                    <div class="internship-card">
+                        <div class="internship-title">${internship.title}</div>
+                        <div class="internship-company">📍 ${internship.company}</div>
+                        <div class="internship-details">
+                            <span>📍 ${internship.location}</span>
+                            <span>⏰ ${internship.duration}</span>
+                            <span>💰 ${internship.stipend}</span>
+                        </div>
+                        <div style="font-size: 12px; color: #28a745; margin-bottom: 10px;">
+                            ✅ Matches: ${internship.skillMatches ? internship.skillMatches.join(', ') : 'Good fit'}
+                        </div>
+                        <button class="apply-btn" onclick="applyNow('${internship.title}')">
+                            Apply Now →
+                        </button>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('recommendations').style.display = 'block';
+        }
+
+        function applyNow(title) {
+            alert(`Great choice! Redirecting to application for: ${title}`);
+        }
+
+        function goBack() {
+            document.getElementById('formSection').style.display = 'block';
+            document.getElementById('recommendations').style.display = 'none';
+            document.getElementById('applicationForm').style.display = 'none';
+        }
+
+        function connectOnLinkedIn() {
+            alert('💼 LinkedIn Integration\n\nThis would normally:\n• Open LinkedIn in a new tab\n• Help you connect with the hiring manager\n• Show relevant company employees in your network\n\nFor demo purposes, this just shows this message!');
+        }
+    </script>
+</body>
+</html>
